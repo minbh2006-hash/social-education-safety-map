@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>명지전문대학 사회교육관 2D 디지털 안전지도</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 상단 헤더 & 층 선택 탭 -->
+  <header class="app-header">
+    <h1>사회교육관 디지털 안전지도</h1>
+    <div class="floor-tabs" id="floor-tabs">
+      <button class="tab-btn active" data-floor="8F">8층</button>
+      <button class="tab-btn" data-floor="7F">7층</button>
+      <button class="tab-btn" data-floor="6F">6층</button>
+      <button class="tab-btn" data-floor="5F">5층</button>
+      <button class="tab-btn" data-floor="4F">4층</button>
+      <button class="tab-btn" data-floor="3F">3층</button>
+
+    </div>
+  </header>
+
+  <!-- 범례 -->
+  <div class="legend-bar">
+    <span class="legend-item"><span class="dot descender"></span> 완강기 (클릭 시 상세정보)</span>
+    <span class="legend-item"><span class="dot stairs"></span> 비상계단 (클릭 시 대피안내)</span>
+  </div>
+
+  <!-- 지도 영역 -->
+  <main class="map-viewport">
+    <div class="map-container" id="map-container">
+      <!-- 층별 도면 배경 이미지 (QGIS 내보내기 이미지 또는 도면 이미지 연결) -->
+      <img id="floor-map-img" src="./images/map_8f.png" alt="층별 안전 도면">
+      <!-- JS로 마커가 동적 생성되는 레이어 -->
+      <div id="marker-layer"></div>
+    </div>
+  </main>
+
+  <!-- 배경 어둡게 처리 (오버레이) -->
+  <div id="bottom-sheet-overlay" class="overlay hidden" onclick="closeBottomSheet()"></div>
+
+  <!-- 바텀 시트 컨테이너 -->
+  <div id="info-bottom-sheet" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+    <div class="sheet-content">
+      <h2 id="sheet-title" class="sheet-title">시설명</h2>
+      
+      <div class="sheet-image-box">
+        <img id="sheet-img" src="" alt="현장 사진">
+      </div>
+
+      <!-- 비상 탈출 4단계 사용법 / 대피 요령 박스 -->
+      <div id="guide-box" class="usage-guide-box">
+        <div class="usage-header">
+          <span id="guide-title" class="usage-title">🚨 비상 탈출 4단계 사용법</span>
+          <span id="guide-sub" class="usage-sub">기기 부착 기준</span>
+        </div>
+        <div id="guide-grid" class="usage-grid"></div>
+        <button id="video-btn" class="video-btn" onclick="openVideoModal()">
+          🎬 10초 사용법 시연 영상 보기
+        </button>
+      </div>
+
+      <!-- 상세 제원 및 점검 정보 박스 -->
+      <div class="spec-box">
+        <ul id="spec-list" class="spec-list"></ul>
+        <hr class="divider">
+        <div class="admin-info">
+          <div class="admin-title">📋 [내부인 열람 정보]</div>
+          <p>최근 점검자: <span id="spec-inspector">(미기재 / 점검 예정)</span></p>
+          <p>최종 점검일: <span id="spec-inspect-date">(미기재 / 점검 예정)</span></p>
+        </div>
+      </div>
+
+      <button class="close-btn" onclick="closeBottomSheet()">확인 (닫기)</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

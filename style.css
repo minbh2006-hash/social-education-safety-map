@@ -1,0 +1,386 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.app-header {
+  background: #1e3a8a;
+  color: #fff;
+  padding: 14px 16px 10px;
+}
+.app-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.floor-tabs {
+  display: flex;
+  gap: 6px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tab-btn.active {
+  background: #ffffff;
+  color: #1e3a8a;
+}
+
+.legend-bar {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.dot.descender { background: #dc2626; }
+.dot.stairs { background: #16a34a; border-radius: 3px; }
+
+/* 지도 컨테이너 */
+.map-viewport {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+.map-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.map-container img {
+  width: 100%;
+  display: block;
+}
+
+/* 마커 공통 스타일 */
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 10;
+  transition: transform 0.15s ease;
+}
+.map-marker:hover { transform: translate(-50%, -50%) scale(1.1); }
+.marker-descender { background: #dc2626; }
+.marker-stairs { background: #16a34a; }
+
+/* 바텀 시트 UI */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.bottom-sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  max-width: 500px;
+  margin: 0 auto;
+  max-height: 88vh;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+}
+.hidden { display: none !important; }
+
+.sheet-handle {
+  width: 40px; height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 12px auto 8px;
+  flex-shrink: 0;
+}
+.sheet-content {
+  padding: 8px 20px 24px;
+  overflow-y: auto;
+}
+.sheet-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  margin: 0 0 14px 0;
+}
+.sheet-title.stairs-theme { color: #15803d; }
+
+.sheet-image-box img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background: #e5e7eb;
+}
+
+/* 가이드 박스 (완강기 노란색 / 비상계단 초록색 테마 분기) */
+.usage-guide-box {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.usage-guide-box.stairs-theme {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+.usage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.usage-title { font-weight: 700; font-size: 0.95rem; color: #b45309; }
+.usage-guide-box.stairs-theme .usage-title { color: #15803d; }
+.usage-sub { font-size: 0.75rem; color: #d97706; }
+.usage-guide-box.stairs-theme .usage-sub { color: #16a34a; }
+
+.usage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.step-card {
+  background: #fff;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+  line-height: 1.35;
+}
+.usage-guide-box.stairs-theme .step-card { border-color: #bbf7d0; }
+
+.video-btn {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.spec-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+.spec-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.divider { border: 0; border-top: 1px dashed #d1d5db; margin: 14px 0; }
+.admin-title { font-weight: 700; color: #1e40af; margin-bottom: 6px; }
+.admin-info p { margin: 4px 0; color: #4b5563; font-size: 0.85rem; }
+
+.close-btn {
+  width: 100%;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.close-btn.stairs-theme { background: #15803d; }
+/* 도면 위 비상계단(계단 무늬 + 비상구 픽토그램) 그래픽 레이어 */
+/* 빨간색 원형 완강기 버튼 (기존 파란색 원 완벽 대체) */
+.marker-descender {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  background: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* 도면 위 비상계단 그래픽 레이어 */
+.stairs-graphic {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 좌측 계단실용 가로 계단 */
+.stair-steps-box {
+  width: 58px;
+  height: 32px;
+  border: 1.5px solid #374151;
+  background: repeating-linear-gradient(
+    90deg,
+    #f9fafb,
+    #f9fafb 5px,
+    #4b5563 5px,
+    #4b5563 6.5px
+  );
+  position: relative;
+}
+.stair-steps-box::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1.5px;
+  background: #374151;
+}
+
+/* 중앙 좁은 칸용 세로 계단 */
+.stair-steps-box.vertical {
+  width: 18px;
+  height: 52px;
+  background: repeating-linear-gradient(
+    0deg,
+    #f9fafb,
+    #f9fafb 4.5px,
+    #4b5563 4.5px,
+    #4b5563 6px
+  );
+}
+.stair-steps-box.vertical::after {
+  top: 0; bottom: 0; left: 50%; right: auto;
+  width: 1.5px; height: auto;
+}
+
+/* 초록색 비상탈출구 픽토그램 */
+.exit-pictogram {
+  width: 20px;
+  height: 20px;
+  background: #16a34a;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+/* =========================================
+   모바일 세로 화면 최적화 (@media max-width: 640px)
+   ========================================= */
+@media (max-width: 640px) {
+  /* 1. 상단 헤더 및 층 탭 콤팩트화 */
+  .app-header {
+    padding: 12px 12px 8px;
+  }
+  .app-header h1 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .floor-tabs {
+    gap: 4px;
+  }
+  .tab-btn {
+    padding: 7px 0;
+    font-size: 0.82rem;
+    border-radius: 6px;
+  }
+
+  /* 2. 범례 1줄 정리 */
+  .legend-bar {
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  /* 3. 지도 영역: 모바일에서 도면이 너무 작아지지 않게 가로 스크롤/확대 지원 */
+  .map-viewport {
+    padding: 10px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .map-container {
+    min-width: 580px; /* 모바일에서 도면 글씨가 선명하게 보이는 최적 폭 */
+    border-radius: 10px;
+  }
+
+  /* 4. 모바일 비율에 맞춘 마커 및 픽토그램 크기 자동 보정 */
+  .marker-descender {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 0.72rem !important;
+    border-width: 1.5px;
+  }
+
+  /* 4층 우측 파란 원 가림 패치도 비율에 맞게 축소 */
+  #marker-layer > div[style*="border-radius: 50%"] {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* 비상탈출구 픽토그램 모바일 축소 */
+  .exit-pictogram {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .exit-pictogram svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* 5. 바텀 시트 모바일 풀스크린 비율 및 아이폰 하단 바 여백 */
+  .bottom-sheet {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 18px 18px 0 0;
+  }
+  .sheet-content {
+    padding: 6px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  .sheet-title {
+    font-size: 1.12rem;
+  }
+  .sheet-image-box img {
+    height: 175px;
+  }
+  .step-card {
+    font-size: 0.78rem;
+    padding: 8px;
+  }
+}

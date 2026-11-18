@@ -14,7 +14,16 @@ const safetyMapData = {
   "7F": {
     mapImg: "./images/map_7f.png",
     items: [
-      { id: "7F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "7F-01 완강기 (서측/709호 앞)", images: ["./images/7f-01-1.jpg", "./images/7f-01-2.jpg"], location: "사회교육관 7층 서측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "7F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5,
+        title: "7F-01 완강기 (서측/709호 앞)",
+        images: ["./images/7f-01-1.jpg", "./images/7f-01-2.jpg"],
+        location: "사회교육관 7층 서측 복도 끝 외벽",
+        date: "2009년 1월", length: "21m", users: "1명", weight: "100kg",
+        status: "⚠️ 사용 불가 (사물함 적치 및 탈출 창문 개방 불가)",
+        warning: "🚨 [긴급 대피 주의] 사물함과 창문 구조물로 인해 탈출구 접근 및 완강기 하강이 차단되어 있습니다. 화재 시 즉시 반대편(동측 701호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "7F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "7F-02 완강기 (동측/701호 앞)", images: ["./images/7f-02-1.jpg", "./images/7f-02-2.jpg"], location: "사회교육관 7층 동측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "7F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "7F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
@@ -51,7 +60,16 @@ const safetyMapData = {
     mapImg: "./images/map_3f.png",
     items: [
       { id: "3F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "3F-01 완강기 (서측/304호 앞)", images: ["./images/3f-01-1.jpg", "./images/3f-01-2.jpg"], location: "사회교육관 3층 서측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
-      { id: "3F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "3F-02 완강기 (동측/301호 앞)", images: ["./images/3f-02-1.jpg", "./images/3f-02-2.jpg"], location: "사회교육관 3층 동측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "3F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5,
+        title: "3F-02 완강기 (동측/301호 앞)",
+        images: ["./images/3f-02-1.jpg", "./images/3f-02-2.jpg"],
+        location: "사회교육관 3층 동측 복도 끝 외벽",
+        date: "2009년 1월", length: "9m", users: "1명", weight: "100kg",
+        status: "⚠️ 사용 불가 (사물함 적치 및 탈출 창문 개방 불가)",
+        warning: "🚨 [긴급 대피 주의] 사물함과 창문 구조물로 인해 탈출구 접근 및 완강기 하강이 차단되어 있습니다. 화재 시 즉시 반대편(서측 304호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "3F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "3F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -159,8 +177,15 @@ function createExitIconHTML(boxSize, svgSize) {
 }
 
 function renderFloor(floor) {
-  currentFloor = floor;
-  const data = safetyMapData[floor];
+  const targetFloor = safetyMapData[floor] ? floor : "8F";
+  currentFloor = targetFloor;
+
+  // 상단 탭 버튼 활성 상태 동기화
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.floor === targetFloor);
+  });
+
+  const data = safetyMapData[targetFloor];
   document.getElementById("floor-map-img").src = data.mapImg;
 
   const markerLayer = document.getElementById("marker-layer");
@@ -188,7 +213,11 @@ function renderFloor(floor) {
       btn.style.width = "56px";
       btn.style.height = "56px";
       btn.style.fontSize = "0.9rem";
-      btn.textContent = "완강";
+      btn.textContent = item.warning ? "주의" : "완강";
+      if (item.warning) {
+        btn.style.backgroundColor = "#b91c1c";
+        btn.style.borderColor = "#fef08a";
+      }
       btn.onclick = () => openBottomSheet(item);
       markerLayer.appendChild(btn);
 
@@ -231,13 +260,14 @@ function switchPhoto(index) {
 }
 
 function renderSpecDetails(item) {
+  const isBlocked = Boolean(item.warning);
   document.getElementById("spec-list").innerHTML = `
     <li>📍 <strong>설치 위치:</strong> ${item.location}</li>
     <li>📅 <strong>제조년월:</strong> ${item.date}</li>
     <li>📏 <strong>로프의 길이:</strong> ${item.length}</li>
     <li>👤 <strong>최대사용자수:</strong> ${item.users}</li>
     <li>⚖️ <strong>최대사용하중:</strong> ${item.weight}</li>
-    <li><strong>상태:</strong> ${item.status}</li>
+    <li style="${isBlocked ? 'color:#dc2626; font-weight:700;' : ''}"><strong>상태:</strong> ${item.status}</li>
   `;
 }
 
@@ -245,6 +275,31 @@ function openBottomSheet(item) {
   currentOpenItem = item;
   document.getElementById("sheet-title").textContent = item.title;
   currentPhotos = item.images || [];
+
+  // 0. 현장 장애물(사물함·창문 개방 불가) 경고 배너 처리
+  let warnBanner = document.getElementById("hazard-warning-banner");
+  if (!warnBanner) {
+    warnBanner = document.createElement("div");
+    warnBanner.id = "hazard-warning-banner";
+    const titleEl = document.getElementById("sheet-title");
+    titleEl.insertAdjacentElement("afterend", warnBanner);
+  }
+
+  if (item.warning) {
+    warnBanner.style.display = "block";
+    warnBanner.style.backgroundColor = "#fef2f2";
+    warnBanner.style.border = "1.5px solid #dc2626";
+    warnBanner.style.color = "#991b1b";
+    warnBanner.style.borderRadius = "10px";
+    warnBanner.style.padding = "11px 13px";
+    warnBanner.style.marginBottom = "12px";
+    warnBanner.style.fontSize = "0.84rem";
+    warnBanner.style.fontWeight = "700";
+    warnBanner.style.lineHeight = "1.45";
+    warnBanner.textContent = item.warning;
+  } else {
+    warnBanner.style.display = "none";
+  }
 
   // 1. 근경(-1) / 원경(-2) 사진 영역 (외부인·재학생 공통)
   const imgBox = document.querySelector(".sheet-image-box");
@@ -296,10 +351,20 @@ function openVideoModal() {
 
 document.getElementById("floor-tabs").addEventListener("click", (e) => {
   if (!e.target.classList.contains("tab-btn")) return;
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  e.target.classList.add("active");
   renderFloor(e.target.dataset.floor);
 });
 
+// =========================================
+// URL 파라미터(?floor=7F 등)로 QR코드 층별 자동 진입
+// =========================================
+function getInitialFloorFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const floorParam = (params.get("floor") || "").toUpperCase();
+  if (safetyMapData[floorParam]) {
+    return floorParam;
+  }
+  return "8F";
+}
+
 updateAuthUI();
-renderFloor("8F");
+renderFloor(getInitialFloorFromURL());

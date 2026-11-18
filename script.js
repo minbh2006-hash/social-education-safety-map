@@ -66,8 +66,8 @@ const safetyMapData = {
         images: ["./images/3f-02-1.jpg", "./images/3f-02-2.jpg"],
         location: "사회교육관 3층 동측 복도 끝 외벽",
         date: "2009년 1월", length: "9m", users: "1명", weight: "100kg",
-        status: "⚠️ 사용 불가 (사물함 적치 및 탈출 창문 개방 불가)",
-        warning: "🚨 [긴급 대피 주의] 사물함과 창문 구조물로 인해 탈출구 접근 및 완강기 하강이 차단되어 있습니다. 화재 시 즉시 반대편(서측 304호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
+        status: "⚠️ 조건부 사용 (창문 결속 장치 절단 불가 시 우회 대피 필수)",
+        warning: "🚨 [긴급 대피 주의] 사물함 및 창문 잠금 결속으로 탈출 창문이 막혀 있습니다. 자를 수 있는 도구로 결속 장치를 끊고 창문을 열 수 있는 경우가 아니라면, 지체하지 말고 반대편(서측 304호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
         videoUrl: DEMO_VIDEO_URL
       },
       { id: "3F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
@@ -180,7 +180,6 @@ function renderFloor(floor) {
   const targetFloor = safetyMapData[floor] ? floor : "8F";
   currentFloor = targetFloor;
 
-  // 상단 탭 버튼 활성 상태 동기화
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.floor === targetFloor);
   });

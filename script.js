@@ -1,10 +1,12 @@
-// 층별 마커 좌표(x%, y%) 및 상세 정보 데이터
+// 층별 마커 좌표(x%, y%) 및 상세 정보 데이터 (1: 근경, 2: 원경)
+const DEMO_VIDEO_URL = "https://youtu.be/tkbmZBRbZyg?si=-onji5TrHhEoMDqd";
+
 const safetyMapData = {
   "8F": {
     mapImg: "./images/map_8f.png",
     items: [
-      { id: "8F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "8F-01 완강기 (서측/806호 앞)", image: "./images/8f-01.jpg", location: "사회교육관 8층 서측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
-      { id: "8F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "8F-02 완강기 (동측/809호 앞)", image: "./images/8f-02.jpg", location: "사회교육관 8층 동측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "8F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "8F-01 완강기 (서측/806호 앞)", images: ["./images/8f-01-1.jpg", "./images/8f-01-2.jpg"], location: "사회교육관 8층 서측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      { id: "8F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "8F-02 완강기 (동측/809호 앞)", images: ["./images/8f-02-1.jpg", "./images/8f-02-2.jpg"], location: "사회교육관 8층 동측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "8F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "8F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -12,8 +14,8 @@ const safetyMapData = {
   "7F": {
     mapImg: "./images/map_7f.png",
     items: [
-      { id: "7F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "7F-01 완강기 (서측/709호 앞)", image: "./images/7f-01.jpg", location: "사회교육관 7층 서측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
-      { id: "7F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "7F-02 완강기 (동측/701호 앞)", image: "./images/7f-02.jpg", location: "사회교육관 7층 동측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "7F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "7F-01 완강기 (서측/709호 앞)", images: ["./images/7f-01-1.jpg", "./images/7f-01-2.jpg"], location: "사회교육관 7층 서측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      { id: "7F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "7F-02 완강기 (동측/701호 앞)", images: ["./images/7f-02-1.jpg", "./images/7f-02-2.jpg"], location: "사회교육관 7층 동측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "7F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "7F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -21,8 +23,8 @@ const safetyMapData = {
   "6F": {
     mapImg: "./images/map_6f.png",
     items: [
-      { id: "6F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "6F-01 완강기 (서측/609호 앞)", image: "./images/6f-01.jpg", location: "사회교육관 6층 서측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
-      { id: "6F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "6F-02 완강기 (동측/601호 앞)", image: "./images/6f-02.jpg", location: "사회교육관 6층 동측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "6F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "6F-01 완강기 (서측/609호 앞)", images: ["./images/6f-01-1.jpg", "./images/6f-01-2.jpg"], location: "사회교육관 6층 서측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      { id: "6F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "6F-02 완강기 (동측/601호 앞)", images: ["./images/6f-02-1.jpg", "./images/6f-02-2.jpg"], location: "사회교육관 6층 동측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "6F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "6F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -30,8 +32,8 @@ const safetyMapData = {
   "5F": {
     mapImg: "./images/map_5f.png",
     items: [
-      { id: "5F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "5F-01 완강기 (서측/513호 앞)", image: "./images/5f-01.jpg", location: "사회교육관 5층 서측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
-      { id: "5F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "5F-02 완강기 (동측/501호 앞)", image: "./images/5f-02.jpg", location: "사회교육관 5층 동측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "5F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "5F-01 완강기 (서측/513호 앞)", images: ["./images/5f-01-1.jpg", "./images/5f-01-2.jpg"], location: "사회교육관 5층 서측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      { id: "5F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "5F-02 완강기 (동측/501호 앞)", images: ["./images/5f-02-1.jpg", "./images/5f-02-2.jpg"], location: "사회교육관 5층 동측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "5F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "5F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -39,7 +41,7 @@ const safetyMapData = {
   "4F": {
     mapImg: "./images/map_4f.png",
     items: [
-      { id: "4F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "4F-01 완강기 (서측/405호 앞)", image: "./images/4f-01.jpg", location: "사회교육관 4층 서측 복도 끝 외벽", date: "2009년 1월", length: "12m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "4F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "4F-01 완강기 (서측/405호 앞)", images: ["./images/4f-01-1.jpg", "./images/4f-01-2.jpg"], location: "사회교육관 4층 서측 복도 끝 외벽", date: "2009년 1월", length: "12m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "4F-HIDE-RIGHT", type: "hide", x: 93.5, y: 34.5 },
       { id: "4F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "4F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
@@ -48,8 +50,8 @@ const safetyMapData = {
   "3F": {
     mapImg: "./images/map_3f.png",
     items: [
-      { id: "3F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "3F-01 완강기 (서측/304호 앞)", image: "./images/3f-01.jpg", location: "사회교육관 3층 서측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
-      { id: "3F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "3F-02 완강기 (동측/301호 앞)", image: "./images/3f-02.jpg", location: "사회교육관 3층 동측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: "https://youtube.com/shorts/example" },
+      { id: "3F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "3F-01 완강기 (서측/304호 앞)", images: ["./images/3f-01-1.jpg", "./images/3f-01-2.jpg"], location: "사회교육관 3층 서측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      { id: "3F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "3F-02 완강기 (동측/301호 앞)", images: ["./images/3f-02-1.jpg", "./images/3f-02-2.jpg"], location: "사회교육관 3층 동측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       { id: "3F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "3F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -57,9 +59,95 @@ const safetyMapData = {
 };
 
 let currentFloor = "8F";
-let currentVideoUrl = "";
+let currentVideoUrl = DEMO_VIDEO_URL;
+let currentPhotos = [];
+let currentOpenItem = null;
+let isStudentVerified = false;
+let verifiedStudentId = "";
 
-// 크기를 지정해서 비상탈출구 SVG 픽토그램을 생성하는 함수
+// =========================================
+// 재학생 학번 10자리 인증 관리
+// =========================================
+function updateAuthUI() {
+  const badge = document.getElementById("user-mode-badge");
+  const authBtn = document.getElementById("open-auth-btn");
+  const lockBox = document.getElementById("student-lock-box");
+  const specBox = document.getElementById("student-spec-box");
+
+  if (isStudentVerified) {
+    badge.textContent = `🎓 재학생 (${verifiedStudentId})`;
+    badge.classList.remove("guest");
+    badge.classList.add("student");
+
+    authBtn.textContent = "로그아웃";
+    authBtn.onclick = logoutStudent;
+
+    if (lockBox) lockBox.classList.add("hidden");
+    if (specBox) specBox.classList.remove("hidden");
+  } else {
+    badge.textContent = "👤 외부인 모드";
+    badge.classList.remove("student");
+    badge.classList.add("guest");
+
+    authBtn.textContent = "🎓 재학생 인증";
+    authBtn.onclick = openAuthModal;
+
+    if (lockBox) lockBox.classList.remove("hidden");
+    if (specBox) specBox.classList.add("hidden");
+  }
+}
+
+function verifyStudentId(inputId) {
+  const inputEl = document.getElementById(inputId);
+  const val = (inputEl ? inputEl.value : "").trim();
+  const isValid10Digits = /^\d{10}$/.test(val);
+
+  const inlineErr = document.getElementById("inline-auth-error");
+  const modalErr = document.getElementById("modal-auth-error");
+
+  if (!isValid10Digits) {
+    if (inputId === "inline-student-id" && inlineErr) inlineErr.classList.remove("hidden");
+    if (inputId === "modal-student-id" && modalErr) modalErr.classList.remove("hidden");
+    return;
+  }
+
+  if (inlineErr) inlineErr.classList.add("hidden");
+  if (modalErr) modalErr.classList.add("hidden");
+
+  isStudentVerified = true;
+  verifiedStudentId = val;
+  updateAuthUI();
+  closeAuthModal();
+
+  if (currentOpenItem) {
+    renderSpecDetails(currentOpenItem);
+  }
+}
+
+function logoutStudent() {
+  isStudentVerified = false;
+  verifiedStudentId = "";
+  const inlineInput = document.getElementById("inline-student-id");
+  const modalInput = document.getElementById("modal-student-id");
+  if (inlineInput) inlineInput.value = "";
+  if (modalInput) modalInput.value = "";
+  updateAuthUI();
+}
+
+function openAuthModal() {
+  document.getElementById("modal-auth-error").classList.add("hidden");
+  document.getElementById("auth-modal-overlay").classList.remove("hidden");
+  document.getElementById("auth-modal").classList.remove("hidden");
+}
+
+function closeAuthModal() {
+  document.getElementById("auth-modal-overlay").classList.add("hidden");
+  document.getElementById("auth-modal").classList.add("hidden");
+}
+
+// =========================================
+// 도면 및 픽토그램 렌더링
+// =========================================
 function createExitIconHTML(boxSize, svgSize) {
   return `
     <div class="exit-pictogram" title="비상탈출구" style="width:${boxSize}px; height:${boxSize}px; border-radius:4px;">
@@ -70,7 +158,6 @@ function createExitIconHTML(boxSize, svgSize) {
   `;
 }
 
-// 층 렌더링 함수
 function renderFloor(floor) {
   currentFloor = floor;
   const data = safetyMapData[floor];
@@ -86,7 +173,6 @@ function renderFloor(floor) {
       stairEl.style.left = `${item.x}%`;
       stairEl.style.top = `${item.y}%`;
 
-      // 아래쪽 계단실(STAIR-01)은 30px로 크게, 위쪽(STAIR-02)은 16px로 유지
       const isBottomStair = item.id.includes("STAIR-01");
       stairEl.innerHTML = isBottomStair
         ? createExitIconHTML(30, 24)
@@ -122,12 +208,56 @@ function renderFloor(floor) {
   });
 }
 
-// 바텀 시트 열기
-function openBottomSheet(item) {
-  document.getElementById("sheet-title").textContent = item.title;
-  document.getElementById("sheet-img").src = item.image;
+// =========================================
+// 근경 / 원경 사진 전환 및 바텀 시트 열기
+// =========================================
+function switchPhoto(index) {
+  const imgEl = document.getElementById("active-sheet-img");
+  const btn0 = document.getElementById("btn-photo-0");
+  const btn1 = document.getElementById("btn-photo-1");
 
-  document.getElementById("guide-title").textContent = "🚨 비상 탈출 4단계 사용법";
+  if (!imgEl || !currentPhotos[index]) return;
+
+  imgEl.style.display = "block";
+  imgEl.src = currentPhotos[index];
+
+  if (index === 0) {
+    btn0.classList.add("active");
+    btn1.classList.remove("active");
+  } else {
+    btn1.classList.add("active");
+    btn0.classList.remove("active");
+  }
+}
+
+function renderSpecDetails(item) {
+  document.getElementById("spec-list").innerHTML = `
+    <li>📍 <strong>설치 위치:</strong> ${item.location}</li>
+    <li>📅 <strong>제조년월:</strong> ${item.date}</li>
+    <li>📏 <strong>로프의 길이:</strong> ${item.length}</li>
+    <li>👤 <strong>최대사용자수:</strong> ${item.users}</li>
+    <li>⚖️ <strong>최대사용하중:</strong> ${item.weight}</li>
+    <li><strong>상태:</strong> ${item.status}</li>
+  `;
+}
+
+function openBottomSheet(item) {
+  currentOpenItem = item;
+  document.getElementById("sheet-title").textContent = item.title;
+  currentPhotos = item.images || [];
+
+  // 1. 근경(-1) / 원경(-2) 사진 영역 (외부인·재학생 공통)
+  const imgBox = document.querySelector(".sheet-image-box");
+  imgBox.innerHTML = `
+    <div class="photo-toggle-bar">
+      <button type="button" id="btn-photo-0" class="photo-toggle-btn active" onclick="switchPhoto(0)">🔍 근경 (기기 상세)</button>
+      <button type="button" id="btn-photo-1" class="photo-toggle-btn" onclick="switchPhoto(1)">🏫 원경 (복도 위치)</button>
+    </div>
+    <img id="active-sheet-img" src="${currentPhotos[0] || ''}" alt="현장 사진" onerror="this.style.display='none'">
+  `;
+
+  // 2. 비상 탈출 4단계 착용/사용법 (외부인·재학생 공통)
+  document.getElementById("guide-title").textContent = "🚨 비상 탈출 4단계 착용·사용법";
   document.getElementById("guide-sub").textContent = "기기 부착 기준";
   document.getElementById("guide-grid").innerHTML = `
     <div class="step-card">1. 후크를 걸고 안전한지 확인</div>
@@ -138,32 +268,32 @@ function openBottomSheet(item) {
 
   const videoBtn = document.getElementById("video-btn");
   videoBtn.style.display = "block";
-  videoBtn.textContent = "🎬 10초 완강기 사용법 시연 영상 보기";
-  currentVideoUrl = item.videoUrl || "";
+  videoBtn.textContent = "🎬 33초 완강기 사용법 시연 영상 보기";
+  currentVideoUrl = item.videoUrl || DEMO_VIDEO_URL;
 
-  document.getElementById("spec-list").innerHTML = `
-    <li>📍 <strong>설치 위치:</strong> ${item.location}</li>
-    <li>📅 <strong>제조년월:</strong> ${item.date}</li>
-    <li>📏 <strong>로프의 길이:</strong> ${item.length}</li>
-    <li>👤 <strong>최대사용자수:</strong> ${item.users}</li>
-    <li>⚖️ <strong>최대사용하중:</strong> ${item.weight}</li>
-    <li><strong>상태:</strong> ${item.status}</li>
-  `;
+  // 3. 재학생 인증 여부에 따라 상세 제원 표시 또는 잠금
+  document.getElementById("inline-auth-error").classList.add("hidden");
+  updateAuthUI();
+  if (isStudentVerified) {
+    renderSpecDetails(item);
+  }
 
   document.getElementById("bottom-sheet-overlay").classList.remove("hidden");
   document.getElementById("info-bottom-sheet").classList.remove("hidden");
 }
 
 function closeBottomSheet() {
+  currentOpenItem = null;
   document.getElementById("bottom-sheet-overlay").classList.add("hidden");
   document.getElementById("info-bottom-sheet").classList.add("hidden");
 }
 
 function openVideoModal() {
-  if (currentVideoUrl) window.open(currentVideoUrl, "_blank");
+  if (currentVideoUrl) {
+    window.open(currentVideoUrl, "_blank");
+  }
 }
 
-// 층 탭 클릭 이벤트
 document.getElementById("floor-tabs").addEventListener("click", (e) => {
   if (!e.target.classList.contains("tab-btn")) return;
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -171,5 +301,5 @@ document.getElementById("floor-tabs").addEventListener("click", (e) => {
   renderFloor(e.target.dataset.floor);
 });
 
-// 초기 8층 렌더링
+updateAuthUI();
 renderFloor("8F");

@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>명지전문대학 사회교육관 2D 디지털 안전지도</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+  <title>사회교육관 디지털 안전지도</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 상단 헤더 & 층 선택 탭 -->
+  <!-- 상단 헤더 -->
   <header class="app-header">
-    <h1>사회교육관 디지털 안전지도</h1>
-    <div class="floor-tabs" id="floor-tabs">
+    <div class="header-top-row">
+      <h1>사회교육관 디지털 안전지도</h1>
+      <div class="auth-status-group">
+        <span id="user-mode-badge" class="mode-badge guest">👤 외부인 모드</span>
+        <button type="button" id="open-auth-btn" class="auth-header-btn" onclick="openAuthModal()">🎓 재학생 인증</button>
+      </div>
+    </div>
+
+    <div id="floor-tabs" class="floor-tabs">
       <button class="tab-btn active" data-floor="8F">8층</button>
       <button class="tab-btn" data-floor="7F">7층</button>
       <button class="tab-btn" data-floor="6F">6층</button>
       <button class="tab-btn" data-floor="5F">5층</button>
       <button class="tab-btn" data-floor="4F">4층</button>
       <button class="tab-btn" data-floor="3F">3층</button>
-
     </div>
   </header>
 
-  <!-- 범례 -->
+  <!-- 범례 바 -->
   <div class="legend-bar">
-    <span class="legend-item"><span class="dot descender"></span> 완강기 (클릭 시 상세정보)</span>
-    <span class="legend-item"><span class="dot stairs"></span> 비상계단 (클릭 시 대피안내)</span>
+    <div class="legend-item">
+      <span class="dot red"></span>
+      <span>완강기 (클릭 시 상세정보)</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot green"></span>
+      <span>비상계단 (비상탈출구 위치)</span>
+    </div>
   </div>
 
-  <!-- 지도 영역 -->
+  <!-- 도면 뷰포트 -->
   <main class="map-viewport">
-    <div class="map-container" id="map-container">
-      <!-- 층별 도면 배경 이미지 (QGIS 내보내기 이미지 또는 도면 이미지 연결) -->
-      <img id="floor-map-img" src="./images/map_8f.png" alt="층별 안전 도면">
-      <!-- JS로 마커가 동적 생성되는 레이어 -->
+    <div class="map-container">
+      <img id="floor-map-img" src="./images/map_8f.png" alt="층별 안전 도면" />
       <div id="marker-layer"></div>
     </div>
   </main>
 
-  <!-- 배경 어둡게 처리 (오버레이) -->
-  <div id="bottom-sheet-overlay" class="overlay hidden" onclick="closeBottomSheet()"></div>
-
-  <!-- 바텀 시트 컨테이너 -->
-  <div id="info-bottom-sheet" class="bottom-sheet hidden">
-    <div class="sheet-handle"></div>
+  <!-- 완강기 상세 정보 바텀 시트 -->
+  <div id="bottom-sheet-overlay" class="bottom-sheet-overlay hidden" onclick="closeBottomSheet()"></div>
+  <section id="info-bottom-sheet" class="bottom-sheet hidden">
+    <div class="sheet-drag-handle"></div>
     <div class="sheet-content">
-      <h2 id="sheet-title" class="sheet-title">시설명</h2>
-      
+      <h2 id="sheet-title" class="sheet-title">8F-01 완강기</h2>
+
+      <!-- 근경 / 원경 사진 영역 (공통 표시) -->
       <div class="sheet-image-box">
-        <img id="sheet-img" src="" alt="현장 사진">
+        <img id="sheet-img" src="" alt="현장 사진" />
       </div>
 
-      <!-- 비상 탈출 4단계 사용법 / 대피 요령 박스 -->
+      <!-- 비상 탈출 4단계 사용법 (공통 표시) -->
       <div id="guide-box" class="usage-guide-box">
         <div class="usage-header">
           <span id="guide-title" class="usage-title">🚨 비상 탈출 4단계 사용법</span>
@@ -58,22 +67,46 @@
         </div>
         <div id="guide-grid" class="usage-grid"></div>
         <button id="video-btn" class="video-btn" onclick="openVideoModal()">
-          🎬 10초 사용법 시연 영상 보기
+          🎬 10초 완강기 사용법 시연 영상 보기
         </button>
       </div>
 
-      <!-- 상세 제원 및 점검 정보 박스 -->
-      <div class="spec-box">
+      <!-- [외부인용] 재학생 인증 유도 잠금 박스 -->
+      <div id="student-lock-box" class="student-lock-box">
+        <p class="lock-title">🔒 상세 제원 및 점검 이력은 재학생 전용입니다</p>
+        <p class="lock-desc">설치 위치, 로프 길이, 최대하중 및 점검 이력을 확인하려면 학번 10자리를 입력하세요.</p>
+        <div class="inline-auth-form">
+          <input type="text" id="inline-student-id" maxlength="10" inputmode="numeric" placeholder="학번 10자리 입력 (예: 2025123456)" />
+          <button type="button" onclick="verifyStudentId('inline-student-id')">인증</button>
+        </div>
+        <p id="inline-auth-error" class="auth-error-msg hidden">⚠️ 숫자 10자리 학번을 정확히 입력해 주세요.</p>
+      </div>
+
+      <!-- [재학생 전용] 상세 제원 및 내부 열람 정보 박스 -->
+      <div id="student-spec-box" class="spec-box hidden">
         <ul id="spec-list" class="spec-list"></ul>
-        <hr class="divider">
+        <hr class="divider" />
         <div class="admin-info">
-          <div class="admin-title">📋 [내부인 열람 정보]</div>
+          <div class="admin-title">📋 [재학생·내부인 열람 정보]</div>
           <p>최근 점검자: <span id="spec-inspector">(미기재 / 점검 예정)</span></p>
           <p>최종 점검일: <span id="spec-inspect-date">(미기재 / 점검 예정)</span></p>
         </div>
       </div>
 
       <button class="close-btn" onclick="closeBottomSheet()">확인 (닫기)</button>
+    </div>
+  </section>
+
+  <!-- 상단 재학생 인증 팝업 모달 -->
+  <div id="auth-modal-overlay" class="bottom-sheet-overlay hidden" onclick="closeAuthModal()"></div>
+  <div id="auth-modal" class="auth-modal hidden">
+    <h3>🎓 명지전문대학 재학생 인증</h3>
+    <p>학번 10자리를 입력하면 모든 층 완강기의 상세 제원(로프 길이, 제조년월, 점검 이력)을 열람할 수 있습니다.</p>
+    <input type="text" id="modal-student-id" maxlength="10" inputmode="numeric" placeholder="학번 10자리 숫자 입력" />
+    <p id="modal-auth-error" class="auth-error-msg hidden">⚠️ 학번은 숫자 10자리로 입력해야 합니다.</p>
+    <div class="auth-modal-btns">
+      <button type="button" class="btn-cancel" onclick="closeAuthModal()">취소</button>
+      <button type="button" class="btn-confirm" onclick="verifyStudentId('modal-student-id')">인증하기</button>
     </div>
   </div>
 

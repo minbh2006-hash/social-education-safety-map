@@ -1,12 +1,46 @@
-// 층별 마커 좌표(x%, y%) 및 상세 정보 데이터 (1: 근경, 2: 원경)
+// 층별 마커 좌표(x%, y%) 및 현장 실측 상세 제원 데이터 (1: 근경, 2: 원경)
 const DEMO_VIDEO_URL = "https://youtu.be/tkbmZBRbZyg?si=-onji5TrHhEoMDqd";
 
 const safetyMapData = {
   "8F": {
     mapImg: "./images/map_8f.png",
     items: [
-      { id: "8F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "8F-01 완강기 (서측/806호 앞)", images: ["./images/8f-01-1.jpg", "./images/8f-01-2.jpg"], location: "사회교육관 8층 서측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
-      { id: "8F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "8F-02 완강기 (동측/809호 앞)", images: ["./images/8f-02-1.jpg", "./images/8f-02-2.jpg"], location: "사회교육관 8층 동측 복도 끝 외벽", date: "2009년 1월", length: "24m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "8F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
+        title: "8F-01 완강기 (서측/806호 앞)",
+        images: ["./images/8f-01-1.jpg", "./images/8f-01-2.jpg"],
+        location: "사회교육관 8층 서측 복도 끝 외벽 (806호 앞)",
+        modelNo: "완94-1-5",
+        serialNo: "525",
+        date: "2008년 1월",
+        length: "27m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
+      {
+        id: "8F-DESC-02",
+        type: "descender",
+        label: "완강기",
+        x: 93.5,
+        y: 34.5,
+        title: "8F-02 완강기 (동측/809호 앞)",
+        images: ["./images/8f-02-1.jpg", "./images/8f-02-2.jpg"],
+        location: "사회교육관 8층 동측 복도 끝 외벽 (809호 앞)",
+        modelNo: "완94-1-5",
+        serialNo: "527",
+        date: "2009년 1월",
+        length: "27m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "8F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "8F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -15,16 +49,42 @@ const safetyMapData = {
     mapImg: "./images/map_7f.png",
     items: [
       {
-        id: "7F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5,
+        id: "7F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
         title: "7F-01 완강기 (서측/709호 앞)",
         images: ["./images/7f-01-1.jpg", "./images/7f-01-2.jpg"],
-        location: "사회교육관 7층 서측 복도 끝 외벽",
-        date: "2009년 1월", length: "21m", users: "1명", weight: "100kg",
+        location: "사회교육관 7층 서측 복도 끝 외벽 (709호 앞)",
+        modelNo: "완15-1-1",
+        serialNo: "164041",
+        date: "2019년 11월",
+        length: "21m",
+        users: "1명",
+        weight: "1500N, 150kg",
         status: "⚠️ 사용 불가 (사물함 적치 및 탈출 창문 개방 불가)",
         warning: "🚨 [긴급 대피 주의] 사물함과 창문 구조물로 인해 탈출구 접근 및 완강기 하강이 차단되어 있습니다. 화재 시 즉시 반대편(동측 701호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
         videoUrl: DEMO_VIDEO_URL
       },
-      { id: "7F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "7F-02 완강기 (동측/701호 앞)", images: ["./images/7f-02-1.jpg", "./images/7f-02-2.jpg"], location: "사회교육관 7층 동측 복도 끝 외벽", date: "2009년 1월", length: "21m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "7F-DESC-02",
+        type: "descender",
+        label: "완강기",
+        x: 93.5,
+        y: 34.5,
+        title: "7F-02 완강기 (동측/701호 앞)",
+        images: ["./images/7f-02-1.jpg", "./images/7f-02-2.jpg"],
+        location: "사회교육관 7층 동측 복도 끝 외벽 (701호 앞)",
+        modelNo: "완94-1-5",
+        serialNo: "498",
+        date: "2008년 1월",
+        length: "24m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "7F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "7F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -32,8 +92,42 @@ const safetyMapData = {
   "6F": {
     mapImg: "./images/map_6f.png",
     items: [
-      { id: "6F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "6F-01 완강기 (서측/609호 앞)", images: ["./images/6f-01-1.jpg", "./images/6f-01-2.jpg"], location: "사회교육관 6층 서측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
-      { id: "6F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "6F-02 완강기 (동측/601호 앞)", images: ["./images/6f-02-1.jpg", "./images/6f-02-2.jpg"], location: "사회교육관 6층 동측 복도 끝 외벽", date: "2009년 1월", length: "18m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "6F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
+        title: "6F-01 완강기 (서측/609호 앞)",
+        images: ["./images/6f-01-1.jpg", "./images/6f-01-2.jpg"],
+        location: "사회교육관 6층 서측 복도 끝 외벽 (609호 앞)",
+        modelNo: "완94-1-5",
+        serialNo: "351",
+        date: "2009년 1월",
+        length: "21m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
+      {
+        id: "6F-DESC-02",
+        type: "descender",
+        label: "완강기",
+        x: 93.5,
+        y: 34.5,
+        title: "6F-02 완강기 (동측/601호 앞)",
+        images: ["./images/6f-02-1.jpg", "./images/6f-02-2.jpg"],
+        location: "사회교육관 6층 동측 복도 끝 외벽 (601호 앞)",
+        modelNo: "완94-1-5",
+        serialNo: "356",
+        date: "2009년 1월",
+        length: "21m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "6F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "6F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -41,8 +135,42 @@ const safetyMapData = {
   "5F": {
     mapImg: "./images/map_5f.png",
     items: [
-      { id: "5F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "5F-01 완강기 (서측/513호 앞)", images: ["./images/5f-01-1.jpg", "./images/5f-01-2.jpg"], location: "사회교육관 5층 서측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
-      { id: "5F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5, title: "5F-02 완강기 (동측/501호 앞)", images: ["./images/5f-02-1.jpg", "./images/5f-02-2.jpg"], location: "사회교육관 5층 동측 복도 끝 외벽", date: "2009년 1월", length: "15m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "5F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
+        title: "5F-01 완강기 (서측/513호 앞)",
+        images: ["./images/5f-01-1.jpg", "./images/5f-01-2.jpg"],
+        location: "사회교육관 5층 서측 복도 끝 외벽 (513호 앞)",
+        modelNo: "완94-1-4",
+        serialNo: "10867",
+        date: "2007년 10월",
+        length: "18m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
+      {
+        id: "5F-DESC-02",
+        type: "descender",
+        label: "완강기",
+        x: 93.5,
+        y: 34.5,
+        title: "5F-02 완강기 (동측/501호 앞)",
+        images: ["./images/5f-02-1.jpg", "./images/5f-02-2.jpg"],
+        location: "사회교육관 5층 동측 복도 끝 외벽 (501호 앞)",
+        modelNo: "완94-1-4",
+        serialNo: "10868",
+        date: "2007년 10월",
+        length: "18m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "5F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "5F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
     ]
@@ -50,7 +178,24 @@ const safetyMapData = {
   "4F": {
     mapImg: "./images/map_4f.png",
     items: [
-      { id: "4F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "4F-01 완강기 (서측/405호 앞)", images: ["./images/4f-01-1.jpg", "./images/4f-01-2.jpg"], location: "사회교육관 4층 서측 복도 끝 외벽", date: "2009년 1월", length: "12m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
+      {
+        id: "4F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
+        title: "4F-01 완강기 (서측/405호 앞)",
+        images: ["./images/4f-01-1.jpg", "./images/4f-01-2.jpg"],
+        location: "사회교육관 4층 서측 복도 끝 외벽 (405호 앞)",
+        modelNo: "완94-1-4",
+        serialNo: "890",
+        date: "2008년 12월",
+        length: "15m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
       { id: "4F-HIDE-RIGHT", type: "hide", x: 93.5, y: 34.5 },
       { id: "4F-STAIR-01", type: "stairs", label: "비상계단", x: 11.5, y: 74.0 },
       { id: "4F-STAIR-02", type: "stairs", label: "비상계단", x: 54.8, y: 19.5 }
@@ -59,13 +204,39 @@ const safetyMapData = {
   "3F": {
     mapImg: "./images/map_3f.png",
     items: [
-      { id: "3F-DESC-01", type: "descender", label: "완강기", x: 6.5, y: 34.5, title: "3F-01 완강기 (서측/304호 앞)", images: ["./images/3f-01-1.jpg", "./images/3f-01-2.jpg"], location: "사회교육관 3층 서측 복도 끝 외벽", date: "2009년 1월", length: "9m", users: "1명", weight: "100kg", status: "정상 작동", videoUrl: DEMO_VIDEO_URL },
       {
-        id: "3F-DESC-02", type: "descender", label: "완강기", x: 93.5, y: 34.5,
+        id: "3F-DESC-01",
+        type: "descender",
+        label: "완강기",
+        x: 6.5,
+        y: 34.5,
+        title: "3F-01 완강기 (서측/304호 앞)",
+        images: ["./images/3f-01-1.jpg", "./images/3f-01-2.jpg"],
+        location: "사회교육관 3층 서측 복도 끝 외벽 (304호 앞)",
+        modelNo: "완94-1-4",
+        serialNo: "2547",
+        date: "2008년 12월",
+        length: "12m",
+        users: "1명",
+        weight: "100kg",
+        status: "정상 작동",
+        videoUrl: DEMO_VIDEO_URL
+      },
+      {
+        id: "3F-DESC-02",
+        type: "descender",
+        label: "완강기",
+        x: 93.5,
+        y: 34.5,
         title: "3F-02 완강기 (동측/301호 앞)",
         images: ["./images/3f-02-1.jpg", "./images/3f-02-2.jpg"],
-        location: "사회교육관 3층 동측 복도 끝 외벽",
-        date: "2009년 1월", length: "9m", users: "1명", weight: "100kg",
+        location: "사회교육관 3층 동측 복도 끝 외벽 (301호 앞)",
+        modelNo: "완94-1-4",
+        serialNo: "2548",
+        date: "2008년 12월",
+        length: "12m",
+        users: "1명",
+        weight: "100kg",
         status: "⚠️ 조건부 사용 (창문 결속 장치 절단 불가 시 우회 대피 필수)",
         warning: "🚨 [긴급 대피 주의] 사물함 및 창문 잠금 결속으로 탈출 창문이 막혀 있습니다. 자를 수 있는 도구로 결속 장치를 끊고 창문을 열 수 있는 경우가 아니라면, 지체하지 말고 반대편(서측 304호 앞 완강기) 또는 중앙 비상계단을 이용하세요.",
         videoUrl: DEMO_VIDEO_URL
@@ -176,6 +347,15 @@ function createExitIconHTML(boxSize, svgSize) {
   `;
 }
 
+function updateMarkerFonts() {
+  const container = document.getElementById("map-container");
+  if (!container) return;
+  const fontSize = Math.max(9.5, Math.min(16, container.offsetWidth * 0.017));
+  container.querySelectorAll(".marker-descender").forEach(btn => {
+    btn.style.fontSize = `${fontSize}px`;
+  });
+}
+
 function renderFloor(floor) {
   const targetFloor = safetyMapData[floor] ? floor : "8F";
   currentFloor = targetFloor;
@@ -209,9 +389,13 @@ function renderFloor(floor) {
       btn.className = "map-marker marker-descender";
       btn.style.left = `${item.x}%`;
       btn.style.top = `${item.y}%`;
-      btn.style.width = "56px";
-      btn.style.height = "56px";
-      btn.style.fontSize = "0.9rem";
+      // 지도 크기에 비례(%)하여 확대 시에도 파란색 기존 아이콘을 100% 가림
+      btn.style.setProperty("width", "7.4%", "important");
+      btn.style.setProperty("height", "auto", "important");
+      btn.style.setProperty("aspect-ratio", "1 / 1", "important");
+      btn.style.padding = "0";
+      btn.style.lineHeight = "1";
+      btn.style.whiteSpace = "nowrap";
       btn.textContent = item.warning ? "주의" : "완강";
       if (item.warning) {
         btn.style.backgroundColor = "#b91c1c";
@@ -222,18 +406,23 @@ function renderFloor(floor) {
 
     } else if (item.type === "hide") {
       const patch = document.createElement("div");
+      patch.className = "hide-patch";
       patch.style.position = "absolute";
       patch.style.left = `${item.x}%`;
       patch.style.top = `${item.y}%`;
       patch.style.transform = "translate(-50%, -50%)";
-      patch.style.width = "60px";
-      patch.style.height = "60px";
+      // 확대 시에도 4층 우측 파란색 아이콘이 비치지 않도록 비례(%) 적용
+      patch.style.setProperty("width", "8.0%", "important");
+      patch.style.setProperty("height", "auto", "important");
+      patch.style.setProperty("aspect-ratio", "1 / 1", "important");
       patch.style.borderRadius = "50%";
       patch.style.background = "#eef2f6";
       patch.style.zIndex = "8";
       markerLayer.appendChild(patch);
     }
   });
+
+  updateMarkerFonts();
 }
 
 // =========================================
@@ -262,6 +451,8 @@ function renderSpecDetails(item) {
   const isBlocked = Boolean(item.warning);
   document.getElementById("spec-list").innerHTML = `
     <li>📍 <strong>설치 위치:</strong> ${item.location}</li>
+    <li>🏷️ <strong>형식번호:</strong> ${item.modelNo}</li>
+    <li>🔢 <strong>제조번호:</strong> ${item.serialNo}</li>
     <li>📅 <strong>제조년월:</strong> ${item.date}</li>
     <li>📏 <strong>로프의 길이:</strong> ${item.length}</li>
     <li>👤 <strong>최대사용자수:</strong> ${item.users}</li>
@@ -401,13 +592,12 @@ function applyZoom(newZoom, smooth = true) {
     : "none";
   container.style.width = `${currentZoom * 100}%`;
 
-  const scaleFactor = Math.min(1.45, 1 + (currentZoom - 1) * 0.35);
+  // 마커와 가림 패치는 % 크기로 지도와 함께 비례 확대되므로 중심점만 유지하고 폰트만 보정
   container.querySelectorAll(".marker-descender").forEach(btn => {
-    btn.style.transition = smooth
-      ? "transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1)"
-      : "none";
-    btn.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+    btn.style.transition = "none";
+    btn.style.transform = "translate(-50%, -50%)";
   });
+  updateMarkerFonts();
 
   if (currentZoom > 1.0) {
     scheduleIdleZoomReset();
@@ -471,6 +661,8 @@ function resetZoom() {
       scheduleIdleZoomReset();
     }
   });
+
+  window.addEventListener("resize", updateMarkerFonts);
 })();
 
 // 초기 실행

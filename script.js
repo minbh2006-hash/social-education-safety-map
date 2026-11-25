@@ -255,9 +255,71 @@ let isStudentVerified = false;
 let verifiedStudentId = "";
 
 // =========================================
-// 모달·바텀시트 열림 시 뒷배경(지도) 스크롤·움직임 완전 잠금
+// iOS Safari 러버밴딩(고무줄 스크롤 전파) 완벽 차단 제어
 // =========================================
 let lockedScrollY = 0;
+let lastTouchY = 0;
+
+function handleGlobalTouchStart(e) {
+  if (e.touches && e.touches.length === 1) {
+    lastTouchY = e.touches[0].clientY;
+  }
+}
+
+function handleGlobalTouchMove(e) {
+  if (document.body.dataset.scrollLocked !== "true") return;
+
+  const sheet = document.getElementById("info-bottom-sheet");
+  const authModal = document.getElementById("auth-modal");
+  const target = e.target;
+
+  // 1. 바텀 시트나 인증 모달 바깥(어두운 배경, 지도, 헤더 등)을 터치한 경우 무조건 차단
+  const insideSheet = sheet && !sheet.classList.contains("hidden") && sheet.contains(target);
+  const insideModal = authModal && !authModal.classList.contains("hidden") && authModal.contains(target);
+
+  if (!insideSheet && !insideModal) {
+    e.preventDefault();
+    return;
+  }
+
+  // 2. 손잡이 드래그 핸들은 자체 드래그 로직이 처리하도록 둠
+  if (target.closest && target.closest(".sheet-drag-handle")) {
+    return;
+  }
+
+  // 3. 바텀 시트 내부가 맨 위 또는 맨 아래 스크롤 끝에 도달했을 때 바깥 화면이 딸려 움직이는 현상 차단
+  const scrollContainer = insideSheet ? sheet : authModal;
+  if (!scrollContainer || e.touches.length !== 1) return;
+
+  const currentY = e.touches[0].clientY;
+  const deltaY = currentY - lastTouchY;
+  lastTouchY = currentY;
+
+  const scrollTop = scrollContainer.scrollTop;
+  const scrollHeight = scrollContainer.scrollHeight;
+  const clientHeight = scrollContainer.clientHeight;
+
+  // 내용이 화면보다 짧아 스크롤할 필요가 없는 경우 전파 차단
+  if (scrollHeight <= clientHeight) {
+    e.preventDefault();
+    return;
+  }
+
+  // 맨 위에서 아래로 더 당길 때 차단
+  if (scrollTop <= 0 && deltaY > 0) {
+    e.preventDefault();
+    return;
+  }
+
+  // 맨 아래에서 위로 더 밀 때 차단
+  if (scrollTop + clientHeight >= scrollHeight - 1 && deltaY < 0) {
+    e.preventDefault();
+    return;
+  }
+}
+
+document.addEventListener("touchstart", handleGlobalTouchStart, { passive: true });
+document.addEventListener("touchmove", handleGlobalTouchMove, { passive: false });
 
 function lockBackgroundScroll() {
   if (document.body.dataset.scrollLocked === "true") return;
@@ -630,7 +692,7 @@ function openBottomSheet(item) {
 
   document.getElementById("bottom-sheet-overlay").classList.remove("hidden");
   sheet.classList.remove("hidden");
-  sheet.scrollTop = 0;
+  sheet.scrollTop = 1; // 초기 스크롤 위치를 1px로 두어 상단 바운스 방지
 }
 
 function closeBottomSheet() {
@@ -646,20 +708,11 @@ function closeBottomSheet() {
 }
 
 // =========================================
-// 바텀 시트 상단 손잡이 수직 드래그 & 탭으로 닫기 기능 + 오버레이 터치 전파 차단
+// 바텀 시트 상단 손잡이 수직 드래그 & 탭으로 닫기 기능
 // =========================================
 (function initBottomSheetDragToClose() {
   const sheet = document.getElementById("info-bottom-sheet");
   const handle = document.querySelector(".sheet-drag-handle");
-  const overlay = document.getElementById("bottom-sheet-overlay");
-
-  if (overlay) {
-    overlay.style.touchAction = "none";
-    overlay.addEventListener("touchmove", (e) => {
-      e.preventDefault();
-    }, { passive: false });
-  }
-
   if (!sheet || !handle) return;
 
   handle.style.cursor = "grab";

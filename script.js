@@ -389,7 +389,6 @@ function renderFloor(floor) {
       btn.className = "map-marker marker-descender";
       btn.style.left = `${item.x}%`;
       btn.style.top = `${item.y}%`;
-      // 지도 크기에 비례(%)하여 확대 시에도 파란색 기존 아이콘을 100% 가림
       btn.style.setProperty("width", "7.4%", "important");
       btn.style.setProperty("height", "auto", "important");
       btn.style.setProperty("aspect-ratio", "1 / 1", "important");
@@ -411,7 +410,6 @@ function renderFloor(floor) {
       patch.style.left = `${item.x}%`;
       patch.style.top = `${item.y}%`;
       patch.style.transform = "translate(-50%, -50%)";
-      // 확대 시에도 4층 우측 파란색 아이콘이 비치지 않도록 비례(%) 적용
       patch.style.setProperty("width", "8.0%", "important");
       patch.style.setProperty("height", "auto", "important");
       patch.style.setProperty("aspect-ratio", "1 / 1", "important");
@@ -461,9 +459,57 @@ function renderSpecDetails(item) {
   `;
 }
 
+function ensureSheetHeaderControls() {
+  const titleEl = document.getElementById("sheet-title");
+  if (!titleEl) return;
+
+  // 제목 줄을 Flexbox로 정렬하여 우측 상단에 '✕' 닫기 버튼 배치
+  titleEl.style.display = "flex";
+  titleEl.style.alignItems = "center";
+  titleEl.style.justifyContent = "space-between";
+  titleEl.style.gap = "8px";
+
+  let closeXBtn = document.getElementById("sheet-top-close-btn");
+  if (!closeXBtn) {
+    closeXBtn = document.createElement("button");
+    closeXBtn.id = "sheet-top-close-btn";
+    closeXBtn.type = "button";
+    closeXBtn.textContent = "✕";
+    closeXBtn.title = "닫기";
+    closeXBtn.style.cssText = `
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    closeXBtn.onclick = closeBottomSheet;
+  }
+
+  return closeXBtn;
+}
+
 function openBottomSheet(item) {
   currentOpenItem = item;
-  document.getElementById("sheet-title").textContent = item.title;
+  const sheet = document.getElementById("info-bottom-sheet");
+  if (sheet) {
+    sheet.style.transform = "";
+    sheet.style.transition = "";
+  }
+
+  const titleEl = document.getElementById("sheet-title");
+  const closeXBtn = ensureSheetHeaderControls();
+  titleEl.innerHTML = `<span>${item.title}</span>`;
+  if (closeXBtn) titleEl.appendChild(closeXBtn);
+
   currentPhotos = item.images || [];
 
   // 0. 현장 장애물(사물함·창문 개방 불가) 경고 배너 처리
@@ -471,7 +517,6 @@ function openBottomSheet(item) {
   if (!warnBanner) {
     warnBanner = document.createElement("div");
     warnBanner.id = "hazard-warning-banner";
-    const titleEl = document.getElementById("sheet-title");
     titleEl.insertAdjacentElement("afterend", warnBanner);
   }
 
@@ -524,14 +569,101 @@ function openBottomSheet(item) {
   }
 
   document.getElementById("bottom-sheet-overlay").classList.remove("hidden");
-  document.getElementById("info-bottom-sheet").classList.remove("hidden");
+  sheet.classList.remove("hidden");
+  sheet.scrollTop = 0;
 }
 
 function closeBottomSheet() {
   currentOpenItem = null;
+  const sheet = document.getElementById("info-bottom-sheet");
   document.getElementById("bottom-sheet-overlay").classList.add("hidden");
-  document.getElementById("info-bottom-sheet").classList.add("hidden");
+  if (sheet) {
+    sheet.classList.add("hidden");
+    sheet.style.transform = "";
+    sheet.style.transition = "";
+  }
 }
+
+// =========================================
+// 바텀 시트 상단 손잡이 드래그 & 탭으로 닫기 기능
+// =========================================
+(function initBottomSheetDragToClose() {
+  const sheet = document.getElementById("info-bottom-sheet");
+  const handle = document.querySelector(".sheet-drag-handle");
+  if (!sheet || !handle) return;
+
+  // 손잡이 터치 영역을 넓혀 손가락으로 잡기 쉽게 개선
+  handle.style.cursor = "grab";
+  handle.style.touchAction = "none";
+  handle.style.padding = "10px 40px";
+  handle.style.backgroundClip = "content-box";
+
+  let startY = 0;
+  let currentDeltaY = 0;
+  let isDragging = false;
+
+  // 손잡이를 탭(클릭)만 해도 닫힘
+  handle.addEventListener("click", () => {
+    closeBottomSheet();
+  });
+
+  // 손잡이 및 상단 제목 영역에서 아래로 드래그 시 닫힘
+  const startDrag = (clientY) => {
+    startY = clientY;
+    currentDeltaY = 0;
+    isDragging = true;
+    sheet.style.transition = "none";
+  };
+
+  const moveDrag = (clientY) => {
+    if (!isDragging) return;
+    const delta = clientY - startY;
+    if (delta > 0) {
+      currentDeltaY = delta;
+      sheet.style.transform = `translateY(${delta}px)`;
+    }
+  };
+
+  const endDrag = () => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    if (currentDeltaY > 65) {
+      sheet.style.transition = "transform 0.22s ease-out";
+      sheet.style.transform = "translateY(100%)";
+      setTimeout(() => {
+        closeBottomSheet();
+      }, 200);
+    } else {
+      sheet.style.transition = "transform 0.22s ease-out";
+      sheet.style.transform = "translateY(0)";
+    }
+  };
+
+  handle.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) startDrag(e.touches[0].clientY);
+  }, { passive: true });
+
+  handle.addEventListener("touchmove", (e) => {
+    if (isDragging && e.touches.length === 1) {
+      e.preventDefault();
+      moveDrag(e.touches[0].clientY);
+    }
+  }, { passive: false });
+
+  handle.addEventListener("touchend", endDrag);
+
+  // PC 마우스 드래그 지원
+  handle.addEventListener("mousedown", (e) => {
+    startDrag(e.clientY);
+  });
+  window.addEventListener("mousemove", (e) => {
+    if (isDragging) moveDrag(e.clientY);
+  });
+  window.addEventListener("mouseup", () => {
+    if (isDragging) endDrag();
+  });
+})();
 
 function openVideoModal() {
   if (currentVideoUrl) {
@@ -592,7 +724,6 @@ function applyZoom(newZoom, smooth = true) {
     : "none";
   container.style.width = `${currentZoom * 100}%`;
 
-  // 마커와 가림 패치는 % 크기로 지도와 함께 비례 확대되므로 중심점만 유지하고 폰트만 보정
   container.querySelectorAll(".marker-descender").forEach(btn => {
     btn.style.transition = "none";
     btn.style.transform = "translate(-50%, -50%)";

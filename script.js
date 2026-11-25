@@ -255,10 +255,19 @@ let isStudentVerified = false;
 let verifiedStudentId = "";
 
 // =========================================
-// iOS Safari 러버밴딩(고무줄 스크롤 전파) 완벽 차단 제어
+// iOS Safari 배경 스크롤 차단 (내부 스크롤은 정상 허용)
 // =========================================
 let lockedScrollY = 0;
 let lastTouchY = 0;
+
+function findScrollableContainer(sheet, authModal, insideSheet) {
+  if (!insideSheet) return authModal;
+  const sheetContent = sheet ? sheet.querySelector(".sheet-content") : null;
+  if (sheetContent && sheetContent.scrollHeight > sheetContent.clientHeight + 1) {
+    return sheetContent;
+  }
+  return sheet;
+}
 
 function handleGlobalTouchStart(e) {
   if (e.touches && e.touches.length === 1) {
@@ -273,22 +282,22 @@ function handleGlobalTouchMove(e) {
   const authModal = document.getElementById("auth-modal");
   const target = e.target;
 
-  // 1. 바텀 시트나 인증 모달 바깥(어두운 배경, 지도, 헤더 등)을 터치한 경우 무조건 차단
   const insideSheet = sheet && !sheet.classList.contains("hidden") && sheet.contains(target);
   const insideModal = authModal && !authModal.classList.contains("hidden") && authModal.contains(target);
 
+  // 바텀 시트나 모달 바깥(어두운 배경, 지도 등) 터치 이동은 무조건 차단
   if (!insideSheet && !insideModal) {
     e.preventDefault();
     return;
   }
 
-  // 2. 손잡이 드래그 핸들은 자체 드래그 로직이 처리하도록 둠
+  // 상단 손잡이 드래그 핸들은 자체 드래그 로직이 처리
   if (target.closest && target.closest(".sheet-drag-handle")) {
     return;
   }
 
-  // 3. 바텀 시트 내부가 맨 위 또는 맨 아래 스크롤 끝에 도달했을 때 바깥 화면이 딸려 움직이는 현상 차단
-  const scrollContainer = insideSheet ? sheet : authModal;
+  // 실제 스크롤되는 영역(.sheet-content 또는 #info-bottom-sheet)을 찾아 경계에서만 차단
+  const scrollContainer = findScrollableContainer(sheet, authModal, insideSheet);
   if (!scrollContainer || e.touches.length !== 1) return;
 
   const currentY = e.touches[0].clientY;
@@ -299,19 +308,18 @@ function handleGlobalTouchMove(e) {
   const scrollHeight = scrollContainer.scrollHeight;
   const clientHeight = scrollContainer.clientHeight;
 
-  // 내용이 화면보다 짧아 스크롤할 필요가 없는 경우 전파 차단
-  if (scrollHeight <= clientHeight) {
+  if (scrollHeight <= clientHeight + 1) {
     e.preventDefault();
     return;
   }
 
-  // 맨 위에서 아래로 더 당길 때 차단
+  // 맨 위에서 아래로 더 당길 때만 차단
   if (scrollTop <= 0 && deltaY > 0) {
     e.preventDefault();
     return;
   }
 
-  // 맨 아래에서 위로 더 밀 때 차단
+  // 맨 아래에서 위로 더 밀 때만 차단
   if (scrollTop + clientHeight >= scrollHeight - 1 && deltaY < 0) {
     e.preventDefault();
     return;
@@ -692,7 +700,10 @@ function openBottomSheet(item) {
 
   document.getElementById("bottom-sheet-overlay").classList.remove("hidden");
   sheet.classList.remove("hidden");
-  sheet.scrollTop = 1; // 초기 스크롤 위치를 1px로 두어 상단 바운스 방지
+
+  const sheetContent = sheet.querySelector(".sheet-content");
+  if (sheetContent) sheetContent.scrollTop = 0;
+  sheet.scrollTop = 0;
 }
 
 function closeBottomSheet() {

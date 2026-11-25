@@ -459,6 +459,15 @@ function renderSpecDetails(item) {
   `;
 }
 
+function normalizeSheetPosition(sheet) {
+  if (!sheet) return;
+  sheet.style.setProperty("left", "0", "important");
+  sheet.style.setProperty("right", "0", "important");
+  sheet.style.setProperty("margin-left", "auto", "important");
+  sheet.style.setProperty("margin-right", "auto", "important");
+  sheet.style.setProperty("transform", "translateY(0px)", "important");
+}
+
 function ensureSheetHeaderControls() {
   const titleEl = document.getElementById("sheet-title");
   if (!titleEl) return;
@@ -501,8 +510,8 @@ function openBottomSheet(item) {
   currentOpenItem = item;
   const sheet = document.getElementById("info-bottom-sheet");
   if (sheet) {
-    sheet.style.transform = "";
-    sheet.style.transition = "";
+    sheet.style.transition = "none";
+    normalizeSheetPosition(sheet);
   }
 
   const titleEl = document.getElementById("sheet-title");
@@ -579,8 +588,8 @@ function closeBottomSheet() {
   document.getElementById("bottom-sheet-overlay").classList.add("hidden");
   if (sheet) {
     sheet.classList.add("hidden");
-    sheet.style.transform = "";
-    sheet.style.transition = "";
+    sheet.style.transition = "none";
+    normalizeSheetPosition(sheet);
   }
 }
 
@@ -600,13 +609,6 @@ function closeBottomSheet() {
   let startY = 0;
   let currentDeltaY = 0;
   let isDragging = false;
-  let baseTranslateX = "0px";
-
-  const getBaseTranslateX = () => {
-    const computed = window.getComputedStyle(sheet);
-    const matrix = new DOMMatrixReadOnly(computed.transform);
-    return `${matrix.m41}px`;
-  };
 
   handle.addEventListener("click", () => {
     closeBottomSheet();
@@ -616,7 +618,7 @@ function closeBottomSheet() {
     startY = clientY;
     currentDeltaY = 0;
     isDragging = true;
-    baseTranslateX = getBaseTranslateX();
+    normalizeSheetPosition(sheet);
     sheet.style.transition = "none";
   };
 
@@ -625,7 +627,7 @@ function closeBottomSheet() {
     const delta = clientY - startY;
     if (delta > 0) {
       currentDeltaY = delta;
-      sheet.style.transform = `translate(${baseTranslateX}, ${delta}px)`;
+      sheet.style.setProperty("transform", `translateY(${delta}px)`, "important");
     }
   };
 
@@ -635,19 +637,13 @@ function closeBottomSheet() {
 
     if (currentDeltaY > 65) {
       sheet.style.transition = "transform 0.22s ease-out";
-      sheet.style.transform = `translate(${baseTranslateX}, 100%)`;
+      sheet.style.setProperty("transform", "translateY(100%)", "important");
       setTimeout(() => {
         closeBottomSheet();
       }, 200);
     } else {
       sheet.style.transition = "transform 0.22s ease-out";
-      sheet.style.transform = `translate(${baseTranslateX}, 0px)`;
-      setTimeout(() => {
-        if (!isDragging) {
-          sheet.style.transform = "";
-          sheet.style.transition = "";
-        }
-      }, 220);
+      sheet.style.setProperty("transform", "translateY(0px)", "important");
     }
   };
 

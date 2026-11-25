@@ -255,6 +255,50 @@ let isStudentVerified = false;
 let verifiedStudentId = "";
 
 // =========================================
+// 모달·바텀시트 열림 시 뒷배경(지도) 스크롤·움직임 완전 잠금
+// =========================================
+let lockedScrollY = 0;
+
+function lockBackgroundScroll() {
+  if (document.body.dataset.scrollLocked === "true") return;
+  lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+
+  document.documentElement.style.overflow = "hidden";
+  document.body.dataset.scrollLocked = "true";
+  document.body.style.overflow = "hidden";
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${lockedScrollY}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
+  document.body.style.width = "100%";
+
+  const zoomWrapper = document.getElementById("zoom-wrapper");
+  if (zoomWrapper) {
+    zoomWrapper.style.pointerEvents = "none";
+  }
+}
+
+function unlockBackgroundScroll() {
+  if (document.body.dataset.scrollLocked !== "true") return;
+
+  document.documentElement.style.overflow = "";
+  document.body.dataset.scrollLocked = "";
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+
+  const zoomWrapper = document.getElementById("zoom-wrapper");
+  if (zoomWrapper) {
+    zoomWrapper.style.pointerEvents = "";
+  }
+
+  window.scrollTo(0, lockedScrollY);
+}
+
+// =========================================
 // 재학생 학번 10자리 인증 관리
 // =========================================
 function updateAuthUI() {
@@ -327,11 +371,15 @@ function openAuthModal() {
   document.getElementById("modal-auth-error").classList.add("hidden");
   document.getElementById("auth-modal-overlay").classList.remove("hidden");
   document.getElementById("auth-modal").classList.remove("hidden");
+  lockBackgroundScroll();
 }
 
 function closeAuthModal() {
   document.getElementById("auth-modal-overlay").classList.add("hidden");
   document.getElementById("auth-modal").classList.add("hidden");
+  if (!currentOpenItem) {
+    unlockBackgroundScroll();
+  }
 }
 
 // =========================================
@@ -466,6 +514,7 @@ function normalizeSheetPosition(sheet) {
   sheet.style.setProperty("margin-left", "auto", "important");
   sheet.style.setProperty("margin-right", "auto", "important");
   sheet.style.setProperty("transform", "translateY(0px)", "important");
+  sheet.style.setProperty("overscroll-behavior", "contain", "important");
 }
 
 function ensureSheetHeaderControls() {
@@ -508,6 +557,8 @@ function ensureSheetHeaderControls() {
 
 function openBottomSheet(item) {
   currentOpenItem = item;
+  lockBackgroundScroll();
+
   const sheet = document.getElementById("info-bottom-sheet");
   if (sheet) {
     sheet.style.transition = "none";
@@ -591,14 +642,24 @@ function closeBottomSheet() {
     sheet.style.transition = "none";
     normalizeSheetPosition(sheet);
   }
+  unlockBackgroundScroll();
 }
 
 // =========================================
-// 바텀 시트 상단 손잡이 수직 드래그 & 탭으로 닫기 기능
+// 바텀 시트 상단 손잡이 수직 드래그 & 탭으로 닫기 기능 + 오버레이 터치 전파 차단
 // =========================================
 (function initBottomSheetDragToClose() {
   const sheet = document.getElementById("info-bottom-sheet");
   const handle = document.querySelector(".sheet-drag-handle");
+  const overlay = document.getElementById("bottom-sheet-overlay");
+
+  if (overlay) {
+    overlay.style.touchAction = "none";
+    overlay.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+    }, { passive: false });
+  }
+
   if (!sheet || !handle) return;
 
   handle.style.cursor = "grab";

@@ -463,11 +463,11 @@ function ensureSheetHeaderControls() {
   const titleEl = document.getElementById("sheet-title");
   if (!titleEl) return;
 
-  // 제목 줄을 Flexbox로 정렬하여 우측 상단에 '✕' 닫기 버튼 배치
   titleEl.style.display = "flex";
   titleEl.style.alignItems = "center";
   titleEl.style.justifyContent = "space-between";
   titleEl.style.gap = "8px";
+  titleEl.style.marginTop = "4px";
 
   let closeXBtn = document.getElementById("sheet-top-close-btn");
   if (!closeXBtn) {
@@ -585,14 +585,13 @@ function closeBottomSheet() {
 }
 
 // =========================================
-// 바텀 시트 상단 손잡이 드래그 & 탭으로 닫기 기능
+// 바텀 시트 상단 손잡이 수직 드래그 & 탭으로 닫기 기능
 // =========================================
 (function initBottomSheetDragToClose() {
   const sheet = document.getElementById("info-bottom-sheet");
   const handle = document.querySelector(".sheet-drag-handle");
   if (!sheet || !handle) return;
 
-  // 손잡이 터치 영역을 넓혀 손가락으로 잡기 쉽게 개선
   handle.style.cursor = "grab";
   handle.style.touchAction = "none";
   handle.style.padding = "10px 40px";
@@ -601,17 +600,23 @@ function closeBottomSheet() {
   let startY = 0;
   let currentDeltaY = 0;
   let isDragging = false;
+  let baseTranslateX = "0px";
 
-  // 손잡이를 탭(클릭)만 해도 닫힘
+  const getBaseTranslateX = () => {
+    const computed = window.getComputedStyle(sheet);
+    const matrix = new DOMMatrixReadOnly(computed.transform);
+    return `${matrix.m41}px`;
+  };
+
   handle.addEventListener("click", () => {
     closeBottomSheet();
   });
 
-  // 손잡이 및 상단 제목 영역에서 아래로 드래그 시 닫힘
   const startDrag = (clientY) => {
     startY = clientY;
     currentDeltaY = 0;
     isDragging = true;
+    baseTranslateX = getBaseTranslateX();
     sheet.style.transition = "none";
   };
 
@@ -620,7 +625,7 @@ function closeBottomSheet() {
     const delta = clientY - startY;
     if (delta > 0) {
       currentDeltaY = delta;
-      sheet.style.transform = `translateY(${delta}px)`;
+      sheet.style.transform = `translate(${baseTranslateX}, ${delta}px)`;
     }
   };
 
@@ -630,13 +635,19 @@ function closeBottomSheet() {
 
     if (currentDeltaY > 65) {
       sheet.style.transition = "transform 0.22s ease-out";
-      sheet.style.transform = "translateY(100%)";
+      sheet.style.transform = `translate(${baseTranslateX}, 100%)`;
       setTimeout(() => {
         closeBottomSheet();
       }, 200);
     } else {
       sheet.style.transition = "transform 0.22s ease-out";
-      sheet.style.transform = "translateY(0)";
+      sheet.style.transform = `translate(${baseTranslateX}, 0px)`;
+      setTimeout(() => {
+        if (!isDragging) {
+          sheet.style.transform = "";
+          sheet.style.transition = "";
+        }
+      }, 220);
     }
   };
 
@@ -653,7 +664,6 @@ function closeBottomSheet() {
 
   handle.addEventListener("touchend", endDrag);
 
-  // PC 마우스 드래그 지원
   handle.addEventListener("mousedown", (e) => {
     startDrag(e.clientY);
   });
